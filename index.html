@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Mr. PRZ Kebab</title>
+  <link rel="stylesheet" href="style.css"/>
+  <script src="https://telegram.org/js/telegram-web-app.js"></script>
+</head>
+<body>
+  <div id="game">
+    <div id="logo">Mr. PRZ Kebab</div>
+    <div id="dailyReward" class="modal hidden">
+      <p id="rewardText">🎁 Подарок от бабушки Халидии!</p>
+      <button onclick="closeReward()">Забрать</button>
+    </div>
+    <div id="clientArea">
+      <img id="clientImage" src="img/client1.png" alt="Клиент"/>
+      <p id="clientPhrase">"Ну ты и кулинар..."</p>
+    </div>
+    <div id="orderArea">
+      <h3>Заказ:</h3>
+      <div id="orderList"></div>
+    </div>
+    <div id="wrapArea">
+      <h3>Сборка:</h3>
+      <div id="wrapList"></div>
+    </div>
+    <div id="ingredients">
+      <button onclick="addIngredient('wrap')"><img src="img/wrap.png" alt="Лепёшка"/></button>
+      <button onclick="addIngredient('meat')"><img src="img/meat.png" alt="Мясо"/></button>
+      <button onclick="addIngredient('cucumber')"><img src="img/cucumber.png" alt="Огурец"/></button>
+      <button onclick="addIngredient('tomato')"><img src="img/tomato.png" alt="Помидор"/></button>
+    </div>
+    <button id="submitBtn" onclick="submitOrder()">Отдать заказ</button>
+    <button id="shareBtn" onclick="shareKebab()">Поделиться 🥙</button>
+    <p id="scoreDisplay">Клиенты обслужены: 0</p>
+  </div>
+  <audio id="soundSuccess" src="audio/success.mp3"></audio>
+  <audio id="soundFail" src="audio/fail.mp3"></audio>
+  <script src="script.js"></script>
+</body>
+</html>

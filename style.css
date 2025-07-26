@@ -1,0 +1,55 @@
+body {
+  font-family: "Comic Sans MS", sans-serif;
+  background: #ffe680;
+  margin: 0;
+  padding: 0;
+  text-align: center;
+}
+#game {
+  padding: 10px;
+}
+#logo {
+  font-size: 24px;
+  font-weight: bold;
+  margin-bottom: 10px;
+}
+#ingredients button {
+  margin: 5px;
+  padding: 5px;
+  background: white;
+  border: 2px solid black;
+  border-radius: 8px;
+}
+#ingredients img {
+  width: 50px;
+}
+#orderList, #wrapList {
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+  margin: 5px 0;
+}
+#orderList img, #wrapList img {
+  width: 40px;
+  transition: transform 0.3s;
+}
+.modal {
+  position: fixed;
+  top: 20%;
+  left: 10%;
+  width: 80%;
+  background: white;
+  border: 2px solid black;
+  padding: 20px;
+  z-index: 10;
+}
+.hidden {
+  display: none;
+}
+
+#clientImage {
+  width: 150px;
+  height: auto;
+  margin-bottom: 10px;
+}
+
