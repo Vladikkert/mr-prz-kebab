@@ -1,99 +1,73 @@
-const ingredients = ["wrap", "meat", "cucumber", "tomato"];
-const orders = [
-  ["wrap", "meat", "tomato"],
-  ["wrap", "cucumber", "tomato"],
-  ["wrap", "meat", "cucumber", "tomato"],
-  ["wrap", "meat"]
-];
-let currentOrder = [];
-let userWrap = [];
+
+let order = [];
+let playerWrap = [];
 let score = 0;
-let coins = parseInt(localStorage.getItem("buterCoins")) || 0;
 
-Telegram.WebApp.ready();
-
-function initGame() {
-
-    // Скрываем заставку через 1 сек
-  setTimeout(() => {
-    document.getElementById("splashScreen").style.display = "none";
-  }, 1000); // можно 1500 или 2000, если хочешь дольше
-
-  checkDailyReward();
-  nextOrder();
-
-  updateHUD();
+function addIngredient(ingredient) {
+  playerWrap.push(ingredient);
+  renderWrap();
 }
 
-// Добавляем монетки
-function updateHUD() {
-  document.getElementById("scoreDisplay").innerText = "💰 Буткоины: " + coins;
-}
-
-
-
-function nextOrder() {
-  userWrap = [];
-  document.getElementById("wrapList").innerHTML = "";
-  currentOrder = orders[Math.floor(Math.random() * orders.length)];
-  const orderList = document.getElementById("orderList");
-  orderList.innerHTML = "";
-  currentOrder.forEach(ing => {
+function renderWrap() {
+  const wrapStack = document.getElementById("wrapStack");
+  wrapStack.innerHTML = '';
+  playerWrap.forEach((item, index) => {
     const img = document.createElement("img");
-    img.src = `img/${ing}.png`;
-    orderList.appendChild(img);
+    img.src = `img/${item}.png`;
+    img.style.position = "absolute";
+    img.style.top = `${80 - index * 20}px`; // наслаивание сверху вниз
+    img.style.left = "50%";
+    img.style.transform = "translateX(-50%)";
+    img.style.zIndex = index;
+    wrapStack.appendChild(img);
   });
-  document.getElementById("clientPhrase").innerText = '"Собери мне шаву, брат!"';
-}
-
-function addIngredient(ing) {
-  userWrap.push(ing);
-  const img = document.createElement("img");
-  img.src = `img/${ing}.png`;
-  img.style.animation = "vzhuh 0.3s";
-  document.getElementById("wrapList").appendChild(img);
 }
 
 function submitOrder() {
-  if (arraysEqual(userWrap, currentOrder)) {
-    document.getElementById("clientPhrase").innerText = '"ДА ЭТО Ж ШАВА ВСЕЯ РУСИ!"';
-    score += 1;
-    coins += 5;
-    localStorage.setItem("buterCoins", coins);
-    updateHUD();
+  if (arraysEqual(order, playerWrap)) {
+    score++;
     document.getElementById("soundSuccess").play();
   } else {
-    document.getElementById("clientPhrase").innerText = '"ТЫ ЧЕГО СЮДА ПОЛОЖИЛ?!?"';
-    coins -= 2;
-    localStorage.setItem("buterCoins", coins);
-    updateHUD();
     document.getElementById("soundFail").play();
   }
-  setTimeout(nextOrder, 1500);
+  document.getElementById("scoreDisplay").innerText = `💰 Буткоины: ${score}`;
+  playerWrap = [];
+  renderWrap();
+  generateOrder();
+}
+
+function generateOrder() {
+  const ingredients = ['wrap', 'meat', 'cucumber', 'tomato'];
+  const orderLength = Math.floor(Math.random() * 3) + 2;
+  order = [];
+  for (let i = 0; i < orderLength; i++) {
+    order.push(ingredients[Math.floor(Math.random() * ingredients.length)]);
+  }
+  renderOrder();
+}
+
+function renderOrder() {
+  const orderList = document.getElementById("orderList");
+  orderList.innerHTML = '';
+  order.forEach(item => {
+    const img = document.createElement("img");
+    img.src = `img/${item}.png`;
+    orderList.appendChild(img);
+  });
 }
 
 function arraysEqual(a, b) {
   return JSON.stringify(a) === JSON.stringify(b);
 }
 
-function shareKebab() {
-  Telegram.WebApp.openTelegramLink(
-    "https://t.me/share/url?url=https://t.me/your_bot&text=🔥 Я собрал " + score + " шав! Попробуй ты!"
-  );
-}
-
-function checkDailyReward() {
-  const today = new Date().toDateString();
-  const last = localStorage.getItem("lastLogin");
-  if (last !== today) {
-    localStorage.setItem("lastLogin", today);
-    document.getElementById("dailyReward").classList.remove("hidden");
-    document.getElementById("rewardText").innerText = "🎁 Бабушка Халидия оставила тебе 20 шавкоинов!";
-  }
-}
-
 function closeReward() {
   document.getElementById("dailyReward").classList.add("hidden");
 }
 
-initGame();
+function shareKebab() {
+  alert("Скоро будет доступен шэринг шавухи в сторис 😎");
+}
+
+window.onload = () => {
+  generateOrder();
+};
