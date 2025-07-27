@@ -1,6 +1,7 @@
 body {
   font-family: "Comic Sans MS", sans-serif;
-  background: #ffe680;
+  background: url('img/bg_street.png') no-repeat center center fixed;
+  background-size: cover;
   margin: 0;
   padding: 0;
   text-align: center;
