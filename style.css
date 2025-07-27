@@ -1,4 +1,3 @@
-
 body {
   font-family: "Arial Black", sans-serif;
   background: url('img/bg_street.png?v=5') no-repeat center center fixed;
@@ -10,6 +9,8 @@ body {
 
 #game {
   padding: 10px;
+  max-width: 100vw;
+  box-sizing: border-box;
 }
 
 #clientScene {
@@ -24,8 +25,10 @@ body {
   background: url('img/speech_bubble.png?v=5') no-repeat center center;
   background-size: contain;
   padding: 10px;
-  height: 210px;
-  width: 370px;
+  height: auto;
+  width: 90vw;
+  max-width: 370px;
+  aspect-ratio: 370 / 210;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -41,7 +44,8 @@ body {
 }
 
 #clientImage {
-  width: 160px;
+  width: 30vw;
+  max-width: 160px;
   height: auto;
   z-index: 1;
   position: relative;
@@ -50,20 +54,17 @@ body {
 #tableZone {
   position: relative;
   background: url('img/table.png?v=5') no-repeat center center;
-  background-size: cover;
-  width: 500px;
-  height: 445px;
+  background-size: contain;
+  width: 100%;
+  max-width: 500px;
+  aspect-ratio: 500 / 445;
   margin-top: 0px;
   z-index: 3;
 }
 
-#table {
-  width: 100%;
-}
-
 #wrapStack {
   position: absolute;
-  top: 50px;
+  top: 10%;
   width: 100%;
   height: 180px;
   z-index: 4;
@@ -73,7 +74,8 @@ body {
   position: absolute;
   left: 50%;
   transform: translateX(-50%);
-  width: 60px;
+  width: 12vw;
+  max-width: 60px;
 }
 
 #ingredients button {
@@ -85,7 +87,8 @@ body {
 }
 
 #ingredients img {
-  width: 60px;
+  width: 14vw;
+  max-width: 60px;
 }
 
 .main-btn {
@@ -109,14 +112,14 @@ body {
   padding: 20px;
   z-index: 10;
 }
- 
+
 .hidden {
   display: none;
 }
 
 #lowerZone {
   position: absolute;
-  bottom: 100px;
+  bottom: 10%;
   width: 100%;
   display: flex;
   flex-direction: column;
@@ -128,9 +131,35 @@ body {
   display: flex;
   gap: 10px;
   margin-bottom: 8px;
+  flex-wrap: wrap;
+  justify-content: center;
 }
 
 #scoreDisplay {
   font-size: 14px;
   margin: 0;
+}
+
+/* Адаптация для маленьких экранов */
+@media (max-width: 600px) {
+  .main-btn {
+    padding: 8px 12px;
+    font-size: 14px;
+  }
+
+  #ingredients img {
+    width: 50px;
+  }
+
+  #wrapStack img {
+    width: 50px;
+  }
+
+  #clientImage {
+    width: 100px;
+  }
+
+  .speech-bubble {
+    width: 95vw;
+  }
 }
