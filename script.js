@@ -8,13 +8,29 @@ const orders = [
 let currentOrder = [];
 let userWrap = [];
 let score = 0;
+let coins = parseInt(localStorage.getItem("buterCoins")) || 0;
 
 Telegram.WebApp.ready();
 
 function initGame() {
+
+    // Скрываем заставку через 1 сек
+  setTimeout(() => {
+    document.getElementById("splashScreen").style.display = "none";
+  }, 1000); // можно 1500 или 2000, если хочешь дольше
+
   checkDailyReward();
   nextOrder();
+
+  updateHUD();
 }
+
+// Добавляем монетки
+function updateHUD() {
+  document.getElementById("scoreDisplay").innerText = "💰 Буткоины: " + coins;
+}
+
+
 
 function nextOrder() {
   userWrap = [];
@@ -42,12 +58,17 @@ function submitOrder() {
   if (arraysEqual(userWrap, currentOrder)) {
     document.getElementById("clientPhrase").innerText = '"ДА ЭТО Ж ШАВА ВСЕЯ РУСИ!"';
     score += 1;
+    coins += 5;
+    localStorage.setItem("buterCoins", coins);
+    updateHUD();
     document.getElementById("soundSuccess").play();
   } else {
     document.getElementById("clientPhrase").innerText = '"ТЫ ЧЕГО СЮДА ПОЛОЖИЛ?!?"';
+    coins -= 2;
+    localStorage.setItem("buterCoins", coins);
+    updateHUD();
     document.getElementById("soundFail").play();
   }
-  document.getElementById("scoreDisplay").innerText = "Клиенты обслужены: " + score;
   setTimeout(nextOrder, 1500);
 }
 

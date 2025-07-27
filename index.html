@@ -8,8 +8,13 @@
   <script src="https://telegram.org/js/telegram-web-app.js"></script>
 </head>
 <body>
+
+  <!-- ЗАСТАВКА -->
+  <div id="splashScreen">
+    <img src="img/splash.png" alt="Mr. PRZ Kebab" />
+  </div>
+
   <div id="game">
-    <div id="logo">Mr. PRZ Kebab</div>
     <div id="dailyReward" class="modal hidden">
       <p id="rewardText">🎁 Подарок от бабушки Халидии!</p>
       <button onclick="closeReward()">Забрать</button>
@@ -34,7 +39,7 @@
     </div>
     <button id="submitBtn" onclick="submitOrder()">Отдать заказ</button>
     <button id="shareBtn" onclick="shareKebab()">Поделиться 🥙</button>
-    <p id="scoreDisplay">Клиенты обслужены: 0</p>
+    <p id="scoreDisplay">💰 Буткоины: 0</p>
   </div>
   <audio id="soundSuccess" src="audio/success.mp3"></audio>
   <audio id="soundFail" src="audio/fail.mp3"></audio>
