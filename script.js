@@ -19,6 +19,18 @@ const clients = [
     greeting: "Тьма просит томат... и мясо.",
     order: ["wrap", "tomato", "meat", "wrap"],
     image: "img/client3.png"
+  },
+  {
+    name: "Зеленый тролль",
+    greeting: "Дай мне просто здоровенный бургер!",
+    order: ["wrap","cucumber", "cucumber","meat", "cucumber", "wrap"],
+    image: "img/client4.png"
+  },
+  {
+    name: "Муддисон",
+    greeting: "Дайте мне бургер, только без этой вашей залупы с огурцом.",
+    order: ["wrap", "meat", "wrap", "cucumber", "wrap"],
+    image: "img/client5.png"
   }
 ];
 
