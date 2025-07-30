@@ -1,6 +1,11 @@
 let score = 0;
 let userOrder = [];
 
+// для шафла
+let queueIndex = 0;
+let clientQueue = [];
+
+
 const clients = [
   {
     name: "Бомж Борис",
@@ -39,6 +44,17 @@ let currentClient = null;
 function pickRandomClient() {
   const index = Math.floor(Math.random() * clients.length);
   currentClient = clients[index];
+  showClient(currentClient);
+}
+
+function pickNextClient() {
+  if (queueIndex >= clientQueue.length) {
+    clientQueue = shuffle([...clients]);
+    queueIndex = 0;
+  }
+
+  currentClient = clientQueue[queueIndex];
+  queueIndex++;
   showClient(currentClient);
 }
 
@@ -83,7 +99,7 @@ function submitOrder() {
     updateScore();
     userOrder = [];
     updateWrapStack();
-    setTimeout(pickRandomClient, 800);
+    setTimeout(pickNextClient, 800);
   } else {
     playFail();
     userOrder = [];
@@ -94,6 +110,14 @@ function submitOrder() {
 function arraysEqual(arr1, arr2) {
   if (arr1.length !== arr2.length) return false;
   return arr1.every((el, i) => el === arr2[i]);
+}
+
+function shuffle(array) {
+  for (let i = array.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [array[i], array[j]] = [array[j], array[i]];
+  }
+  return array;
 }
 
 function updateScore() {
@@ -123,6 +147,8 @@ function closeReward() {
 }
 
 window.onload = () => {
-  pickRandomClient();
+  clientQueue = shuffle([...clients]);
+  queueIndex = 0;
+  pickNextClient();
   updateScore();
 };
