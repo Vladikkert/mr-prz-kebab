@@ -1,51 +1,89 @@
-
 <!DOCTYPE html>
-<html lang="ru">
+<html>
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Mr. PRZ Kebab</title>
-  <link rel="stylesheet" href="style.css"/>
-  <script src="https://telegram.org/js/telegram-web-app.js"></script>
+  <meta charset="UTF-8">
+  <title>Клиенты</title>
+  <style>
+    #client-img {
+      width: 200px;
+      height: auto;
+      border: 2px solid #000;
+    }
+  </style>
 </head>
 <body>
+  <h2>Клиент:</h2>
+  <img id="client-img" src="" alt="клиент">
+  <br><br>
+  <button onclick="showNextClient()">Следующий клиент</button>
 
-  <div id="game">
-    <div id="dailyReward" class="modal hidden">
-      <p id="rewardText">🎁 Подарок от бабушки Халидии!</p>
-      <button onclick="closeReward()">Забрать</button>
-    </div>
+  <script>
+    // 1. Список всех клиентов (предположим, у нас 100 PNG-файлов)
+    const allClients = [
+      { id: 'client1', url: 'img/client1.png' },
+      { id: 'client2', url: 'img/client2.png' },
+      { id: 'client3', url: 'img/client3.png' },
+      { id: 'client4', url: 'img/client4.png' },
+      { id: 'client5', url: 'img/client5.png' },
+    ];
+    // 2. Кэш на 2 клиента
+    const clientCache = new Map();
+    let currentClientId = null;
+    let nextClient = null;
 
-    <div id="clientScene">
-      <div class="speech-bubble" id="orderList">
-      <div id="clientSpeech">— ...</div>
-      <div id="orderIcons"></div>
-    </div>
+    // 3. Функция: вернуть случайного клиента
+    function getRandomClient() {
+      const index = Math.floor(Math.random() * allClients.length);
+      return allClients[index];
+    }
 
-      <div id="tableZone">
-        <img id="clientImage" src="img/client1.png" alt="Клиент"/>
-        <img id="tableImage" src="img/table.png" alt="Стол"/>
-        <div id="wrapStack"></div>
-        <div id="lowerZone">
-          <div id="ingredients">
-            <button onclick="addIngredient('wrap')"><img src="img/wrap.png" alt="Лепёшка"/></button>
-            <button onclick="addIngredient('meat')"><img src="img/meat.png" alt="Мясо"/></button>
-            <button onclick="addIngredient('cucumber')"><img src="img/cucumber.png" alt="Огурец"/></button>
-            <button onclick="addIngredient('tomato')"><img src="img/tomato.png" alt="Помидор"/></button>
-          </div>
-          <div id="buttons">
-            <button class="main-btn" onclick="submitOrder()">отдать заказ</button>
-            <button class="main-btn" onclick="shareKebab()">Поделиться 🥙</button>
-          </div>
-          <p id="scoreDisplay">💰 Буткоины: 0</p>
-        </div>
-      </div>
-    </div>
+    // 4. Функция загрузки картинки клиента
+    async function loadClient(id, url) {
+      if (clientCache.has(id)) {
+        return clientCache.get(id);
+      }
 
-  </div>
+      return new Promise((resolve) => {
+        const img = new Image();
+        img.onload = () => {
+          clientCache.set(id, img);
+          cleanCache(id);
+          resolve(img);
+        };
+        img.src = url;
+      });
+    }
 
-  <audio id="soundSuccess" src="audio/success.mp3"></audio>
-  <audio id="soundFail" src="audio/fail.mp3"></audio>
-  <script src="script.js"></script>
+    // 5. Очищаем кэш: оставляем только текущего и следующего
+    function cleanCache(keepId) {
+      const allowed = new Set([keepId, nextClient?.id]);
+      for (const id of clientCache.keys()) {
+        if (!allowed.has(id)) {
+          clientCache.delete(id);
+          console.log(`Удалён из кэша: ${id}`);
+        }
+      }
+    }
+
+    // 6. Показать следующего клиента
+    async function showNextClient() {
+      // Берём следующего, если есть, иначе случайного
+      const client = nextClient || getRandomClient();
+      currentClientId = client.id;
+
+      const img = await loadClient(client.id, client.url);
+      document.getElementById('client-img').src = img.src;
+
+      // Подгружаем нового "следующего"
+      nextClient = getRandomClient();
+      if (!clientCache.has(nextClient.id)) {
+        loadClient(nextClient.id, nextClient.url); // фоновая предзагрузка
+      }
+    }
+
+    // 7. Первый запуск
+    nextClient = getRandomClient();
+    showNextClient();
+  </script>
 </body>
 </html>
